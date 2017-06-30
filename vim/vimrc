@@ -1,0 +1,44 @@
+syntax on
+set nocompatible
+set autoindent
+set ruler
+set tabstop=4 softtabstop=0 noexpandtab shiftwidth=4
+set hidden
+set wildmode=longest,list,full
+set wildmenu
+
+" Begin Vundle
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+
+call vundle#begin()
+Plugin 'gmarik/Vundle.vim'
+Plugin 'tpope/vim-fugitive'
+Plugin 'vim-syntastic/syntastic'
+Plugin 'pangloss/vim-javascript'
+Plugin 'leafgarland/typescript-vim'
+call vundle#end()
+filetype plugin indent on
+" End Vundle
+
+function ShowSpaces(...)
+	let @/='\v(\s+$)|( +\ze\t)'
+	let oldhlsearch=&hlsearch
+	if !a:0
+		let &hlsearch=!&hlsearch
+	else
+		let &hlsearch=a:1
+	end
+	return oldhlsearch
+endfunction
+
+function TrimSpaces() range
+	let oldhlsearch=ShowSpaces(1)
+	execute a:firstline.",".a:lastline."substitute ///gec"
+	let &hlsearch=oldhlsearch
+endfunction
+
+command -bar -nargs=? ShowSpaces call ShowSpaces(<args>)
+command -bar -nargs=0 -range=% TrimSpaces <line1>,<line2>call TrimSpaces()
+nnoremap <F9> :ShowSpaces 1<CR>
+nnoremap <S-F9> m`:TrimSpaces<CR>``
