@@ -31,7 +31,6 @@ PS1="\[\e]0;\W (\h)\a\]\n\[\e[${color_cyan}m\]\A \[\e[${color_green}m\]\u@\h \[\
 alias cgrep="grep -E --exclude-dir='*.svn' --exclude-dir='.metadata' --exclude='*.class' --exclude='*.jar' --exclude='*.war' --exclude='*.ear' --exclude='*.log' --exclude='*.log.*'"
 alias disable_move_key_repeat='for k in 25 38 39 40; do xset -r $k; done'
 
-
 function collatePDF {
 odd="$1"
 even="$2"
@@ -95,4 +94,21 @@ fi
 
 wine_disassociate() {
 	find $HOME/.local/share/applications -name "wine-extension-*" | grep -Ev -e '\b(acsm|azw|azw4|vbs|odm)\b' | xargs rm
+}
+
+svn_mv_after() {
+	if ! [ -e "$2" ]; then 
+		echo "non-existent destination, check order" 1>&2
+		return
+	fi
+	if [ -e "$1" ]; then
+		echo "source exists, correct" 1>&2
+		return
+	fi
+	mv "$2" "$1"
+	svn mv "$1" "$2"
+}
+
+zip_summarize() {
+	unzip -lv "$1" | tr -s ' ' | cut -d' ' -f8,9 | tail -n+4
 }
