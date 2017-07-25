@@ -110,5 +110,5 @@ svn_mv_after() {
 }
 
 zip_summarize() {
-	unzip -lv "$1" | tr -s ' ' | cut -d' ' -f8,9 | tail -n+4
+	unzip -lv "$1" | tr -s ' ' | cut -d' ' -f8,9 | tail -n+4 | sort -k2
 }
