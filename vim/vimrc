@@ -7,19 +7,21 @@ set hidden
 set wildmode=longest,list,full
 set wildmenu
 
-" Begin Vundle
-filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
-
-call vundle#begin()
-Plugin 'gmarik/Vundle.vim'
-Plugin 'tpope/vim-fugitive'
-Plugin 'vim-syntastic/syntastic'
-Plugin 'pangloss/vim-javascript'
-Plugin 'leafgarland/typescript-vim'
-call vundle#end()
+execute pathogen#infect()
 filetype plugin indent on
-" End Vundle
+" " Begin Vundle
+" filetype off
+" set rtp+=~/.vim/bundle/Vundle.vim
+" 
+" call vundle#begin()
+" Plugin 'gmarik/Vundle.vim'
+" Plugin 'tpope/vim-fugitive'
+" Plugin 'vim-syntastic/syntastic'
+" Plugin 'pangloss/vim-javascript'
+" Plugin 'leafgarland/typescript-vim'
+" call vundle#end()
+" filetype plugin indent on
+" " End Vundle
 
 function ShowSpaces(...)
 	let @/='\v(\s+$)|( +\ze\t)'
@@ -42,3 +44,13 @@ command -bar -nargs=? ShowSpaces call ShowSpaces(<args>)
 command -bar -nargs=0 -range=% TrimSpaces <line1>,<line2>call TrimSpaces()
 nnoremap <F9> :ShowSpaces 1<CR>
 nnoremap <S-F9> m`:TrimSpaces<CR>``
+
+" syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0

@@ -1,4 +1,3 @@
-BASEPATH=${BASEPATH:-${PATH}}
 export LANG=en_CA.UTF-8
 export XMLLINT_INDENT="	"
 export HISTFILESIZE=100000
@@ -24,6 +23,10 @@ color_brown='0;33'
 color_yellow='1;33'
 color_lightGray='0;37'
 color_white='1;37'
+
+COMMON_SETUP=$HOME/common_setup
+BASEPATH=${BASEPATH:-${PATH}}
+PATH=$COMMON_SETUP/scripts:$BASEPATH
 
 # PS1="\[\e]0;\w\a\]\n\A \[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\]\n\$ "
 PS1="\[\e]0;\W (\h)\a\]\n\[\e[${color_cyan}m\]\A \[\e[${color_green}m\]\u@\h \[\e[${color_brown}m\]\w\[\e[${color_red}m\]\n\\\$ \[\e[m\]"

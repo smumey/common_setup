@@ -1,0 +1,23 @@
+#!/bin/sh
+# set up sym links
+die() {
+	echo "$@" 1>&2
+	exit 1
+}
+
+COMMON_SETUP=$HOME/common_setup
+PLUGIN_LIST=$COMMON_SETUP/git_plugins
+
+if ! test -e "$HOME/.vimrc"
+then
+	ln -s $COMMON_SETUP/vim/vimrc $HOME/.vimrc
+fi
+if ! test -e "$HOME/.vim"
+then
+	ln -s $COMMON_SETUP/vim $HOME/.vim
+fi
+
+# install pathogen
+
+mkdir -p ~/.vim/autoload ~/.vim/bundle && \
+curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
