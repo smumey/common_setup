@@ -5,7 +5,7 @@ export XMLLINT_INDENT="	"
 export HISTFILESIZE=10000
 export HISTSIZE=10000
 export HISTCONTROL=ignoreboth:erasedups
-_PROMPT_COMMAND=${_PROMPT_COMMAND:-${PROMPT_COMMAND}}
+_PROMPT_COMMAND=${_PROMPT_COMMAND-${PROMPT_COMMAND}}
 export PROMPT_COMMAND="history -n; history -w; history -c; history -r; $_PROMPT_COMMAND"
 shopt -s histappend
 
@@ -32,7 +32,7 @@ color_lightGray='0;37'
 color_white='1;37'
 
 COMMON_SETUP=$HOME/common_setup
-_PATH=${_PATH:-${PATH}}
+_PATH=${_PATH-${PATH}}
 PATH=$COMMON_SETUP/scripts:$_PATH
 
 # PS1="\[\e]0;\w\a\]\n\A \[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\]\n\$ "
