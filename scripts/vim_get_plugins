@@ -1,3 +1,6 @@
 #!/bin/sh
 cd ~/.vim/bundle || exit 1
-git clone --depth=1 https://github.com/vim-syntastic/syntastic.git
+while read url
+do
+	git clone "$url"
+done < ../plugins

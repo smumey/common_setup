@@ -6,7 +6,7 @@ export HISTFILESIZE=10000
 export HISTSIZE=10000
 export HISTCONTROL=ignoreboth:erasedups
 _PROMPT_COMMAND=${_PROMPT_COMMAND-${PROMPT_COMMAND}}
-export PROMPT_COMMAND="history -n; history -w; history -c; history -r; $_PROMPT_COMMAND"
+export PROMPT_COMMAND="history -a; history -c; history -r; $_PROMPT_COMMAND"
 shopt -s histappend
 
 shopt -s direxpand 2>/dev/null # not in RHEL6 bash
