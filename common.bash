@@ -4,9 +4,8 @@ export XMLLINT_INDENT="	"
 # history settings
 export HISTFILESIZE=10000
 export HISTSIZE=10000
-export HISTCONTROL=ignoreboth:erasedups
-_PROMPT_COMMAND=${_PROMPT_COMMAND-${PROMPT_COMMAND}}
-export PROMPT_COMMAND="history -a; history -c; history -r; $_PROMPT_COMMAND"
+export HISTCONTROL=ignorespace:erasedups
+export PROMPT_COMMAND="history -a; history -c; history -r"
 shopt -s histappend
 
 shopt -s direxpand 2>/dev/null # not in RHEL6 bash
@@ -32,7 +31,7 @@ color_lightGray='0;37'
 color_white='1;37'
 
 COMMON_SETUP=$HOME/common_setup
-_PATH=${_PATH-${PATH}}
+_PATH=${_PATH:-${PATH}}
 PATH=$COMMON_SETUP/scripts:$_PATH
 
 # PS1="\[\e]0;\w\a\]\n\A \[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\]\n\$ "
