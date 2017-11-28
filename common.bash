@@ -70,7 +70,7 @@ function clean_downloads {
 	find $HOME/Downloads -mindepth 1 -maxdepth 1 -mtime +90 -exec rm -rf {} \;
 }
 
-SSH_ENV="$HOME/.ssh/environment"
+SSH_ENV="$HOME/.ssh/environment.$HOSTNAME"
 
 function start_agent {
 	echo "Initialising new SSH agent..."
