@@ -96,9 +96,9 @@ then
 	fi
 fi
 
-if [ -r $HOME/.bash_local ]
+if [ -r $HOME/.bash.$HOSTNAME ]
 then
-	. $HOME/.bash_local
+	. $HOME/.bash.$HOSTNAME
 fi
 
 wine_disassociate() {
