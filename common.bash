@@ -119,5 +119,19 @@ svn_mv_after() {
 }
 
 zip_summarize() {
-	unzip -lv "$1" | tr -s ' ' | cut -d' ' -f8,9 | tail -n+4 | sort -k2
+	fields=5
+	flags=-l
+	sort=1
+	if [ "$1" == "-l" ] 
+	then
+		shift
+		flags='-vl'
+		fields=8,9 
+		sort=2
+	fi
+	unzip $flags "$1" | tr -s ' ' | cut -d' ' -f$fields | tail -n+4 | sort -k$sort
+}
+
+vim-in0() {
+	xargs -0 sh -c 'vim "$@" < /dev/tty' vim;
 }
