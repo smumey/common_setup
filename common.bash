@@ -41,28 +41,28 @@ alias cgrep="grep -E --exclude-dir='*.svn' --exclude-dir='.metadata' --exclude='
 alias disable_move_key_repeat='for k in 25 38 39 40; do xset -r $k; done'
 
 function collatePDF {
-odd="$1"
-even="$2"
-output="$3"
-if [[ -z "$output" ]]
-then
-	output=$(echo "$1" | sed -r 's/(.+)_\w+.pdf/\1.pdf/')
-fi
-if [[ -z "$odd" || -z "$even" || -z "$output" || "$output" == "$odd" ]]
-then
-	echo "invalid input odd=$odd even=$even output=$output" >&2
-	return 1;
-fi
-if [ -e "$output" ]
-then
-	echo "file $output exists, not overwriting" >&2
-	return 1;
-fi
-echo $output
-pdftk A="$odd" B="$even" shuffle A Bend-1south output "$output"
+	odd="$1"
+	even="$2"
+	output="$3"
+	if [[ -z "$output" ]]
+	then
+		output=$(echo "$1" | sed -r 's/(.+)_\w+.pdf/\1.pdf/')
+	fi
+	if [[ -z "$odd" || -z "$even" || -z "$output" || "$output" == "$odd" ]]
+	then
+		echo "invalid input odd=$odd even=$even output=$output" >&2
+		return 1;
+	fi
+	if [ -e "$output" ]
+	then
+		echo "file $output exists, not overwriting" >&2
+		return 1;
+	fi
+	echo $output
+	pdftk A="$odd" B="$even" shuffle A Bend-1south output "$output"
 }
 
-function git_stash_reverse() {
+function git_stash_reverse {
 	git stash show -p | git apply --reverse	
 }
 
