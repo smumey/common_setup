@@ -4,8 +4,8 @@ export XMLLINT_INDENT="	"
 # history settings
 export HISTFILESIZE=10000
 export HISTSIZE=10000
-export HISTCONTROL=ignorespace:erasedups
-export PROMPT_COMMAND="history -a; history -c; history -r"
+export HISTCONTROL=ignorespace:ignoredups:erasedups
+export PROMPT_COMMAND="history -a; history -r"
 shopt -s histappend
 
 shopt -s direxpand 2>/dev/null # not in RHEL6 bash
@@ -30,8 +30,11 @@ color_yellow='1;33'
 color_lightGray='0;37'
 color_white='1;37'
 
-COMMON_SETUP=$HOME/common_setup
+# echo "before _PATH=$_PATH"
 _PATH=${_PATH:-${PATH}}
+# echo "after _PATH=$_PATH"
+
+COMMON_SETUP=$HOME/common_setup
 PATH=$COMMON_SETUP/scripts:$_PATH
 
 # PS1="\[\e]0;\w\a\]\n\A \[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\]\n\$ "
@@ -132,6 +135,6 @@ zip_summarize() {
 	unzip $flags "$1" | tr -s ' ' | cut -d' ' -f$fields | tail -n+4 | sort -k$sort
 }
 
-vim-in0() {
-	xargs -0 sh -c 'vim "$@" < /dev/tty' vim;
+vim_stdin_files() {
+	xargs sh -c 'vim "$@" < /dev/tty' vim
 }
