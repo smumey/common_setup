@@ -13,23 +13,16 @@ shopt -s direxpand 2>/dev/null # not in RHEL6 bash
 tabs -4 2>/dev/null || true
 alias less="less -x4 -R"
 
-color_black='0;30'
-color_darkGray='1;30'
-color_blue='0;34'
-color_lightBlue='1;34'
-color_green='0;32'
-color_lightGreen='1;32'
-color_cyan='0;36'
-color_lightCyan='1;36'
-color_red='0;31'
-color_lightRed='1;31'
-color_purple='0;35'
-color_lightPurple='1;35'
-color_brown='0;33'
-color_yellow='1;33'
-color_lightGray='0;37'
-color_white='1;37'
-
+color_black="\[$(tput setaf 0)\]"
+color_red="\[$(tput setaf 1)\]"
+color_green="\[$(tput setaf 2)\]"
+color_yellow="\[$(tput setaf 3)\]"
+color_blue="\[$(tput setaf 4)\]"
+color_magenta="\[$(tput setaf 5)\]"
+color_cyan="\[$(tput setaf 6)\]"
+color_white="\[$(tput setaf 7)\]"
+reset="\[$(tput sgr0)\]"
+bold=
 # echo "before _PATH=$_PATH"
 _PATH=${_PATH:-${PATH}}
 # echo "after _PATH=$_PATH"
@@ -37,8 +30,14 @@ _PATH=${_PATH:-${PATH}}
 COMMON_SETUP=$HOME/common_setup
 PATH=$COMMON_SETUP/scripts:$_PATH
 
-# PS1="\[\e]0;\w\a\]\n\A \[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\]\n\$ "
-PS1="\[\e]0;\W (\h)\a\]\n\[\e[${color_cyan}m\]\A \[\e[${color_green}m\]\u@\h \[\e[${color_brown}m\]\w\[\e[${color_red}m\]\n\\\$ \[\e[m\]"
+if [ -z "$DISPLAY" ]
+then
+	titleString=
+else
+	titleString="\[\e]2;\W (\h)\a\]"
+fi
+
+PS1="$titleString${color_cyan}\A ${color_green}\u@\h ${color_yellow}\w\n${color_red}\\\$ ${reset}"
 
 alias cgrep="grep -E --exclude-dir='*.svn' --exclude-dir='.metadata' --exclude='*.class' --exclude='*.jar' --exclude='*.war' --exclude='*.ear' --exclude='*.log' --exclude='*.log.*'"
 alias disable_move_key_repeat='for k in 25 38 39 40; do xset -r $k; done'
@@ -66,7 +65,7 @@ function collatePDF {
 }
 
 function git_stash_reverse {
-	git stash show -p | git apply --reverse	
+	git stash show -p | git apply --reverse
 }
 
 function clean_downloads {
@@ -109,7 +108,7 @@ wine_disassociate() {
 }
 
 svn_mv_after() {
-	if ! [ -e "$2" ]; then 
+	if ! [ -e "$2" ]; then
 		echo "non-existent destination, check order" 1>&2
 		return
 	fi
@@ -125,11 +124,11 @@ zip_summarize() {
 	fields=5
 	flags=-l
 	sort=1
-	if [ "$1" == "-l" ] 
+	if [ "$1" == "-l" ]
 	then
 		shift
 		flags='-vl'
-		fields=8,9 
+		fields=8,9
 		sort=2
 	fi
 	unzip $flags "$1" | tr -s ' ' | cut -d' ' -f$fields | tail -n+4 | sort -k$sort
