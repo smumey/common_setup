@@ -13,16 +13,19 @@ shopt -s direxpand 2>/dev/null # not in RHEL6 bash
 tabs -4 2>/dev/null || true
 alias less="less -x4 -R"
 
-color_black="\[$(tput setaf 0)\]"
-color_red="\[$(tput setaf 1)\]"
-color_green="\[$(tput setaf 2)\]"
-color_yellow="\[$(tput setaf 3)\]"
-color_blue="\[$(tput setaf 4)\]"
-color_magenta="\[$(tput setaf 5)\]"
-color_cyan="\[$(tput setaf 6)\]"
-color_white="\[$(tput setaf 7)\]"
-reset="\[$(tput sgr0)\]"
-bold=
+if [[ $- == *i* ]]
+then
+	color_black="\[$(tput setaf 0)\]"
+	color_red="\[$(tput setaf 1)\]"
+	color_green="\[$(tput setaf 2)\]"
+	color_yellow="\[$(tput setaf 3)\]"
+	color_blue="\[$(tput setaf 4)\]"
+	color_magenta="\[$(tput setaf 5)\]"
+	color_cyan="\[$(tput setaf 6)\]"
+	color_white="\[$(tput setaf 7)\]"
+	reset="\[$(tput sgr0)\]"
+fi
+
 # echo "before _PATH=$_PATH"
 _PATH=${_PATH:-${PATH}}
 # echo "after _PATH=$_PATH"
