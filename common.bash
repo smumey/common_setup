@@ -1,13 +1,10 @@
-export LANG=en_CA.UTF-8
-export XMLLINT_INDENT="	"
-
 # history settings
-export HISTFILESIZE=10000
-export HISTSIZE=10000
-export HISTCONTROL=ignorespace:ignoredups:erasedups
-export PROMPT_COMMAND="history -a; history -r"
-shopt -s histappend
+HISTFILESIZE=10000
+HISTSIZE=10000
+HISTCONTROL=ignorespace:ignoredups:erasedups
+PROMPT_COMMAND="history -a; history -r"
 
+shopt -s histappend
 shopt -s direxpand 2>/dev/null # not in RHEL6 bash
 
 tabs -4 2>/dev/null || true
@@ -25,13 +22,6 @@ then
 	color_white="\[$(tput setaf 7)\]"
 	reset="\[$(tput sgr0)\]"
 fi
-
-# echo "before _PATH=$_PATH"
-_PATH=${_PATH:-${PATH}}
-# echo "after _PATH=$_PATH"
-
-COMMON_SETUP=$HOME/common_setup
-PATH=$COMMON_SETUP/scripts:$_PATH
 
 if [ -z "$DISPLAY" ]
 then
@@ -75,35 +65,28 @@ function clean_downloads {
 	find $HOME/Downloads -mindepth 1 -maxdepth 1 -mtime +90 -exec rm -rf {} \;
 }
 
-SSH_ENV="$HOME/.ssh/environment.$HOSTNAME"
+ssh_env="$HOME/.ssh/environment.$HOSTNAME"
 
 function start_agent {
 	echo "Initialising new SSH agent..."
-	/usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
+	/usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${ssh_env}"
 	echo succeeded
-	chmod 600 "${SSH_ENV}"
-	. "${SSH_ENV}" > /dev/null
+	chmod 600 "${ssh_env}"
+	. "${ssh_env}" > /dev/null
 	/usr/bin/ssh-add;
 }
 
 # Source SSH settings, if applicable
 if [ -z "${DISPLAY}" ]
 then
-	if [ -f "${SSH_ENV}" ]
+	if [ -f "${ssh_env}" ]
 	then
-		. "${SSH_ENV}" > /dev/null
+		. "${ssh_env}" > /dev/null
 		#ps ${SSH_AGENT_PID} doesn't work under cywgin
-		ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
-		start_agent;
-	}
+		ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || start_agent
 	else
 		start_agent;
 	fi
-fi
-
-if [ -r $HOME/.bash.local.$HOSTNAME ]
-then
-	. $HOME/.bash.local.$HOSTNAME
 fi
 
 wine_disassociate() {

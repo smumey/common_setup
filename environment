@@ -1,0 +1,6 @@
+LANG=en_CA.UTF-8
+XMLLINT_INDENT="	"
+
+export \
+	LANG \
+	XMLLINT_ENDENT \
