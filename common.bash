@@ -10,7 +10,7 @@ shopt -s direxpand 2>/dev/null # not in RHEL6 bash
 tabs -4 2>/dev/null || true
 alias less="less -x4 -R"
 
-function config_prompt {
+function prompt_set {
 	local color_black="\[$(tput setaf 0)\]"
 	local color_red="\[$(tput setaf 1)\]"
 	local color_green="\[$(tput setaf 2)\]"
@@ -29,10 +29,10 @@ function config_prompt {
 			title_bar=""
 			;;
 	esac
-	local gitPrompt="\$(__git_ps1 (%s))"
-	PS1="$titleString${color_cyan}\A ${color_green}\u@\h ${color_yellow}\w\n${color_red}\\\$ ${reset}"
+	PS1="$titleString${color_cyan}\A ${color_green}\u@\h ${color_yellow}\w ${color_magenta}\$(__git_ps1 '(%s)')"\
+$'\n'"${color_red}\$ ${reset}"
 }
-config_prompt
+prompt_set
 
 alias cgrep="grep -E --exclude-dir='*.svn' --exclude-dir='.metadata' --exclude='*.class' --exclude='*.jar' --exclude='*.war' --exclude='*.ear' --exclude='*.log' --exclude='*.log.*'"
 alias disable_move_key_repeat='for k in 25 38 39 40; do xset -r $k; done'
