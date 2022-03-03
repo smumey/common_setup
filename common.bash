@@ -10,27 +10,29 @@ shopt -s direxpand 2>/dev/null # not in RHEL6 bash
 tabs -4 2>/dev/null || true
 alias less="less -x4 -R"
 
-if [[ $- == *i* ]]
-then
-	color_black="\[$(tput setaf 0)\]"
-	color_red="\[$(tput setaf 1)\]"
-	color_green="\[$(tput setaf 2)\]"
-	color_yellow="\[$(tput setaf 3)\]"
-	color_blue="\[$(tput setaf 4)\]"
-	color_magenta="\[$(tput setaf 5)\]"
-	color_cyan="\[$(tput setaf 6)\]"
-	color_white="\[$(tput setaf 7)\]"
-	reset="\[$(tput sgr0)\]"
-fi
-
-if [ -z "$DISPLAY" ]
-then
-	titleString=
-else
-	titleString="\[\e]2;\W (\h)\a\]"
-fi
-
-PS1="$titleString${color_cyan}\A ${color_green}\u@\h ${color_yellow}\w\n${color_red}\\\$ ${reset}"
+function config_prompt {
+	local color_black="\[$(tput setaf 0)\]"
+	local color_red="\[$(tput setaf 1)\]"
+	local color_green="\[$(tput setaf 2)\]"
+	local color_yellow="\[$(tput setaf 3)\]"
+	local color_blue="\[$(tput setaf 4)\]"
+	local color_magenta="\[$(tput setaf 5)\]"
+	local color_cyan="\[$(tput setaf 6)\]"
+	local color_white="\[$(tput setaf 7)\]"
+	local reset="\[$(tput sgr0)\]"
+	local titlebar
+	case $TERM in
+		xterm*|rxvt*)
+			title_bar="\[\e]2;\W (\h)\a\]"
+			;;
+		*)
+			title_bar=""
+			;;
+	esac
+	local gitPrompt="\$(__git_ps1 (%s))"
+	PS1="$titleString${color_cyan}\A ${color_green}\u@\h ${color_yellow}\w\n${color_red}\\\$ ${reset}"
+}
+config_prompt
 
 alias cgrep="grep -E --exclude-dir='*.svn' --exclude-dir='.metadata' --exclude='*.class' --exclude='*.jar' --exclude='*.war' --exclude='*.ear' --exclude='*.log' --exclude='*.log.*'"
 alias disable_move_key_repeat='for k in 25 38 39 40; do xset -r $k; done'
@@ -64,30 +66,6 @@ function git_stash_reverse {
 function clean_downloads {
 	find $HOME/Downloads -mindepth 1 -maxdepth 1 -mtime +90 -exec rm -rf {} \;
 }
-
-ssh_env="$HOME/.ssh/environment.$HOSTNAME"
-
-function start_agent {
-	echo "Initialising new SSH agent..."
-	/usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${ssh_env}"
-	echo succeeded
-	chmod 600 "${ssh_env}"
-	. "${ssh_env}" > /dev/null
-	/usr/bin/ssh-add;
-}
-
-# Source SSH settings, if applicable
-if [ -z "${DISPLAY}" ]
-then
-	if [ -f "${ssh_env}" ]
-	then
-		. "${ssh_env}" > /dev/null
-		#ps ${SSH_AGENT_PID} doesn't work under cywgin
-		ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || start_agent
-	else
-		start_agent;
-	fi
-fi
 
 wine_disassociate() {
 	find $HOME/.local/share/applications -name "wine-extension-*" | grep -Ev -e '\b(acsm|azw|azw4|vbs|odm)\b' | xargs rm
