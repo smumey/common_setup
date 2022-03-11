@@ -20,7 +20,7 @@ function prompt_set {
 	local color_cyan="\[$(tput setaf 6)\]"
 	local color_white="\[$(tput setaf 7)\]"
 	local reset="\[$(tput sgr0)\]"
-	local titlebar
+	local title_bar
 	case $TERM in
 		xterm*|rxvt*)
 			title_bar="\[\e]2;\W (\h)\a\]"
@@ -29,7 +29,7 @@ function prompt_set {
 			title_bar=""
 			;;
 	esac
-	PS1="$titleString${color_cyan}\A ${color_green}\u@\h ${color_yellow}\w ${color_magenta}\$(__git_ps1 '(%s)')"\
+	PS1="$title_bar${color_cyan}\A ${color_green}\u@\h ${color_yellow}\w ${color_magenta}\$(__git_ps1 '(%s)')"\
 $'\n'"${color_red}\$ ${reset}"
 }
 prompt_set
