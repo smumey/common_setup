@@ -101,3 +101,7 @@ zip_summarize() {
 vim_stdin_files() {
 	xargs sh -c 'vim "$@" < /dev/tty' vim
 }
+
+clip() {
+	xclipboard --selection clipboard "$@"
+}
