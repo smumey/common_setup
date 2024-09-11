@@ -103,5 +103,5 @@ vim_stdin_files() {
 }
 
 clip() {
-	xclipboard --selection clipboard "$@"
+	xclip -selection clipboard "$@"
 }
